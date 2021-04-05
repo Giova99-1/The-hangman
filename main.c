@@ -35,7 +35,7 @@ int main(){
         do {
             //game loop
             do {
-                printf("\nYou have %d attempts.\n Letter right: %d/ %d\n", attempts, letter_right,i-1);
+                printf("\nYou have %d attempts.\n Letter right: %d/ %d\n", attempts, letter_right, i);
                 printHangman(attempts);
                 for(int j = 0; words[word_sel][j] != '\0';j++)
                     printf("%c ",hidden[j]);
