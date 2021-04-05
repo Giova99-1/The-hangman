@@ -22,7 +22,7 @@ int getch(void)
     return ch; /*return received char */
 }
 
-FILE *openFile() { return fopen("parole.txt","r"); }
+FILE *openFile() { return fopen("vocabulary.txt","r"); }
 
 bool valid(char c) { return (c >= 'a' && c <= 'z') || (int)c == 27; }
 
