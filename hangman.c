@@ -181,3 +181,10 @@ void empty(char *array, int size, char init)
     }
     array[i] = '\0';
 }
+bool isUsed(int n, int * v, int n_w_sel)
+{
+    for (int i = 0; i < n_w_sel; i++) {
+        if(v[i] == n) return true;
+    }
+    return false;
+}

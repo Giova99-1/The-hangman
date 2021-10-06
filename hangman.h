@@ -29,4 +29,5 @@ bool lose(int, char*);
 void printHangman(int);
 bool letterUsed(char *, char);
 void empty(char *, int , char);
+bool isUsed(int , int * , int);
 #endif /* hangman_h */

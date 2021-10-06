@@ -6,9 +6,11 @@
 //
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include "hangman.c"
 
 int main(){
+    int w_used[N_W], n_w_sel = 0;
     char words[N_W][N_C];
     FILE *f ;
     if((f = openFile()) == NULL)
@@ -25,8 +27,18 @@ int main(){
     system("clear");
     char r, ch ;
     do{
+        //word selection
         char hidden[N_C], l_used[26];
-        int attempts = 6,  word_sel = getWord(number_words), i, n_l = 0, letter_right = 0;
+        int attempts = 6;
+        int word_sel;
+        do{
+            word_sel=getWord(number_words);
+        }while(isUsed(word_sel, w_used, n_w_sel));
+        w_used[n_w_sel] = word_sel;
+        n_w_sel++;
+
+        int i, n_l = 0, letter_right = 0;
+        
         empty(l_used, 26, ' ');
         //init hidden word
         for(i = 0; words[word_sel][i]!='\0'; i++)
@@ -35,7 +47,9 @@ int main(){
         do {
             //game loop
             do {
-                printf("\nYou have %d attempts.\n Letter right: %d/ %d\n", attempts, letter_right, i);
+
+                printf("Word number %d/%d",n_w_sel, number_words);
+                printf("\nYou have %d attempts.\n Letter right: %d/%d\n", attempts, letter_right, i);
                 printHangman(attempts);
                 for(int j = 0; words[word_sel][j] != '\0';j++)
                     printf("%c ",hidden[j]);
@@ -58,6 +72,13 @@ int main(){
         {
             fflush(stdin);
             system("clear");
+            if(number_words == n_w_sel) 
+            {
+                printf("The words are finished.\n");
+                r='n';
+                sleep(2);
+                break;
+            }
             printf("You want to play again(y=yes; n=no):");
             scanf("%c", &r);
             system("clear");
