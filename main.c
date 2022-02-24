@@ -10,7 +10,7 @@
 #include "hangman.c"
 
 int main(){
-    int w_used[N_W], n_w_sel = 0;
+    int w_used[N_W], n_w_sel = 0, w_right = 0;
     char words[N_W][N_C];
     FILE *f ;
     if((f = openFile()) == NULL)
@@ -47,7 +47,6 @@ int main(){
         do {
             //game loop
             do {
-
                 printf("Word number %d/%d",n_w_sel, number_words);
                 printf("\nYou have %d attempts.\n Letter right: %d/%d\n", attempts, letter_right, i);
                 printHangman(attempts);
@@ -65,7 +64,11 @@ int main(){
                 letter_right += v;
             l_used[n_l] = ch;
             n_l++;
-            if(win(letter_right , i)) break;
+            if(win(letter_right , i)) 
+            {
+                w_right++;
+                break;
+            }
         } while (attempts > 0);
         if(attempts == 0) lose(attempts, words[word_sel]);
         do
@@ -86,6 +89,7 @@ int main(){
         } while(r != 'y' || r != 'n');
     } while (r =='y');
     system("clear");
+    printf("You right %d/%d words\n",w_right, n_w_sel);
     printf("Thank you for plaing.\n");
     exit(EXIT_SUCCESS);
 }
