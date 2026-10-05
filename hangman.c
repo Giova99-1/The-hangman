@@ -29,17 +29,27 @@ bool valid(char c) { return (c >= 'a' && c <= 'z') || (int)c == 27; }
 // return the number of the words read in the file
 int readFile(char words[N_W][N_C], FILE *file)
 {
-    int i = 0;
-    for(; !feof(file) || i <= N_W; i++)
-        fscanf(file,"%s",words[i]);
-    return i;
+    int count = 0;
+    while (count < N_W && fscanf(file, "%44s", words[count]) == 1)
+    {
+        count++;
+    }
+    return count;
 }
 
 int getWord(int n_w)
 {
-    srand(time(NULL));
-    int n = rand() % (n_w - 1) + 1;
-    return n;
+    static bool seeded = false;
+    if (n_w <= 0)
+    {
+        return -1;
+    }
+    if (!seeded)
+    {
+        srand((unsigned)time(NULL));
+        seeded = true;
+    }
+    return rand() % n_w;
 }
 
 int countCharWord(char *word, char *hidden)
@@ -162,24 +172,32 @@ void printHangman(int a)
     }
 }
 
-bool letterUsed(char *l_used, char c){
-    for(int i = 0; l_used[i]!='\0'; i++)
-        if(l_used[i] == c)
+bool letterUsed(const char *l_used, int length, char c)
+{
+    for (int i = 0; i < length; i++)
+    {
+        if (l_used[i] == c)
         {
             system("clear");
-            printf("The %c letter has already been inserted", c);
+            printf("The %c letter has already been inserted\n", c);
             getch();
+            system("clear");
             return true;
         }
+    }
     return false;
 }
-void empty(char *array, int size, char init)
+void empty(char *array, size_t size, char init)
 {
-    int i = 0;
-    for (; i < size; i++) {
+    if (size == 0)
+    {
+        return;
+    }
+    for (size_t i = 0; i < size - 1; i++)
+    {
         array[i] = init;
     }
-    array[i] = '\0';
+    array[size - 1] = '\0';
 }
 bool isUsed(int n, int * v, int n_w_sel)
 {
